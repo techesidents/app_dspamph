@@ -1,0 +1,3 @@
+app icon, description and store images. see more info here:
+Mobile app template we followed - https://github.com/wvsu-cict-code/thesis-package/wiki/Mobile-Apps-or-Games
+General instructions - https://github.com/wvsu-cict-code/thesis-package/wiki/Getting-Started?fbclid=IwAR1aM1irJq_RC4mLiFcj9S44Yx9Wt9K9viRhCBK_kr6UrsH9o0Le_23k8co#your-thesis-package
