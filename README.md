@@ -38,8 +38,8 @@ Folders
     	/src - source code to build the dspamph web app (admin) and mobile app (users)
 		/DSpamPH_MobileApp (for sim users) - Frontend & Backend 
 		/DSpamPH_WebApp (for administrator) - Frontend & Backend 
-   	/dist - apk file
-	/store_assets - app icon, description and store images
+   	 /dist - apk file
+	 /store_assets - app icon, description and store images
  
 
   
