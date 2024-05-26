@@ -65,8 +65,8 @@ class _HomePageState extends State<HomePage> {
 
     final UserCredential userCredential =
         await _auth.signInWithEmailAndPassword(
-      email: "alladynica.alinsod@wvsu.edu.ph",
-      password: "Anawvsu123",
+      email: "your.email@wvsu.edu.ph",
+      password: "yourpass123",
     );
 
     if (userCredential.user != null) {
