@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spam Message Counter</title>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
+</head>
+<body>
+    <h1>Spam Message Recorded</h1>
+    <p id="counter">Counting...</p>
+
+    <script>
+        // TODO: Replace with your Firebase project configuration
+        var firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        var db = firebase.firestore();
+
+        // Count spam messages
+        db.collection("messages").where("isSpam", "==", true).get().then((querySnapshot) => {
+            document.getElementById("counter").innerText = "Number of spam messages: " + querySnapshot.size;
+        });
+    </script>
+</body>
+</html>
