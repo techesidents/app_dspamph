@@ -1,0 +1,258 @@
+<!-- wordcloud.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D-SpamPH Dashboard</title>
+
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Include Firebase SDK -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.3.0/firebase-app.js" defer></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.3.0/firebase-firestore.js" defer></script>
+
+    <!-- Pie chart js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js/dist/Chart.min.js"></script>
+
+    <!-- need to edit pa -->
+    <link rel="icon" type="image/x-icon" src="\logo\spamPH.png">
+
+    <link rel="stylesheet" href="maindash.css">
+
+    <!-- Include your custom scripts -->
+    <script type="module" src="firebase-init.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" defer></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" defer></script>
+    <!-- Include D3.js and d3-cloud -->
+    <script src="https://d3js.org/d3.v5.min.js" defer></script>
+    <script src="https://cdn.rawgit.com/jasondavies/d3-cloud/v1.2.5/build/d3.layout.cloud.js" defer></script>
+
+
+    <script type="module" src="firebase-init.js" defer></script>
+    <script src="main.js" defer></script>
+
+</head>
+
+<body>
+    <div class="header">
+        <div class="nav">
+            <div class="admin">
+                <a>Spam Dashboard |</a>
+                <button type="button" class="searchBttn" onclick="backPHP()">
+                    <img src="images/back.png" height="25px" width="25px">
+                    <i>Go Back To Portal</i>
+                </button>
+            </div>
+        </div>
+        <div class="ntc">
+            <img src="logo/spamPH.png" alt="D-SpamPH" height="80px" width="80px">
+            <div>
+                <strong class="ntctxt1">D-SpamPH</strong>
+                <small class="ntctxt2">A Spam Reporting Platform and Web Analytics</small>
+            </div>
+        </div>
+        <!-- Add buttons for Catalogue, Pie Chart, and Line Graph -->
+        <div class="buttons-container">
+            <div class="navigation">
+                <ul>
+                    <li class="list">
+                        <a href="#" onclick="showHome()">
+                            <span class="icon">
+                                <img src="images/navhome.png" alt="Home Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 6px;">
+                                <span class="text">Home</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="#" onclick="showCatalogue()">
+                            <span class="icon">
+                                <img src="images/navcatalogue.png" alt="Catalogue Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Catalogue</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list active">
+                        <a href="#" onclick="showWordCloud()">
+                            <span class="icon">
+                                <img src="images/navwordcloud.png" alt="Word Cloud Icon" height="30px" width="30px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Word Cloud</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="#" onclick="showPie()">
+                            <span class="icon">
+                                <img src="images/navpie.png" alt="Pie Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Pie Chart</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="#" onclick="showLine()">
+                            <span class="icon">
+                                <img src="images/navline.png" alt="Line Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Line Graph</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Updated structure for the tables -->
+    <div class="column">
+        <div class="cards">
+            <div class="table-rounded-container" id="wordcloud-container"></div>
+        </div>
+    </div>
+<script>
+    function showHome() {
+        window.location.href = 'Dashboard-main.html';
+    }
+
+    function showCatalogue() {
+        window.location.href = 'catalogue.html';
+    }
+
+    function showWordCloud() {
+        window.location.href = 'wordcloud.html';
+    }
+
+    function showPie() {
+        window.location.href = 'pie.html';
+    }
+
+    function showLine() {
+        window.location.href = 'line.html';
+    }
+
+// List of English stop words
+const englishStopWords = ['the', 'and', 'in', 'to', 'of', 'for', 'on', 'with', 'at', 'by', 'is', 'this', 'a', 'an', 'here', 'please', 'now', 'will', 'up', 'as', 'can', 'our', 'and', 'r!', '!', 'now', 'or', 'you', 'r', 'your'];
+
+// List of Tagalog stop words
+const tagalogStopWords = ['ang', 'sa', 'ng', 'na', 'ay', 'ngayon', 'kay', 'ni', 'kaniya', 'siya', 'ito', 'isa', 'dalawa', 'tatlo', 'para', 'hanggang', 'ka', 'mga', 'bagong'];
+
+// Combine both English and Tagalog stop words
+const stopWords = [...englishStopWords, ...tagalogStopWords];
+
+// Modify the function to fetch and render the word cloud
+function fetchAndRenderWordCloud() {
+    fetch('http://127.0.0.1:5000/get_firestore_data')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Word Cloud Data:', data);
+
+            if (data && Array.isArray(data) && data.length > 0) {
+                // Process the data to count keywords excluding stop words
+                const keywordsCount = countKeywords(data);
+
+                // Generate the word cloud
+                generateWordCloud(keywordsCount);
+            } else {
+                console.error('Invalid Word Cloud Data:', data);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching word cloud data:', error);
+        });
+}
+
+// Function to count keywords in spam_content, excluding stop words
+function countKeywords(data) {
+    const keywordsCount = {};
+
+    data.forEach(entry => {
+        const spamContent = entry.spam_content;
+
+        if (spamContent && /\S/.test(spamContent.trim())) {
+            // Split the spam content into words
+            const words = spamContent.split(/\s+/);
+
+            // Count the occurrences of each non-stop word
+            words.forEach(word => {
+                const normalizedWord = word.toLowerCase();
+                if (!stopWords.includes(normalizedWord)) {
+                    keywordsCount[normalizedWord] = (keywordsCount[normalizedWord] || 0) + 1;
+                }
+            });
+        }
+    });
+
+    return keywordsCount;
+}
+// Function to generate a word cloud without rotation
+function generateWordCloud(keywordsCount) {
+    const words = Object.keys(keywordsCount).map(word => ({
+        text: word,
+        size: keywordsCount[word] * 0.5, // Adjust the size based on the count
+    }));
+
+    const colorScale = d3.scaleLinear()
+        .domain([0, d3.max(words, d => d.size)])
+        .range(["#FFA500", "#FF0000"]);
+
+    const width = 800;
+    const height = 400;
+
+    const svg = d3.select("#wordcloud-container").html("")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+    const cloud = d3.layout.cloud()
+        .size([width, height])
+        .words(words)
+        .padding(10) // Adjust the padding to increase spacing between words
+        .rotate(0)
+        .fontSize(d => d.size)
+        .on("end", draw);
+
+    cloud.start();
+
+    function draw(words) {
+        svg.selectAll("text")
+            .data(words)
+            .enter().append("text")
+            .style("font-size", d => d.size + "px")
+            .style("font-family", "Impact")
+            .style("font-weight", "300")
+            .style("fill", d => colorScale(d.size))
+            .attr("text-anchor", "middle")
+            .attr("transform", d => "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")")
+            .text(d => d.text);
+    }
+}
+
+
+        // Call the function to fetch and render the word cloud when the page loads
+        document.addEventListener('DOMContentLoaded', fetchAndRenderWordCloud);
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+        var currentPage = window.location.href;
+
+        // Get all the anchor tags in the navigation
+        var navLinks = document.querySelectorAll('.navigation a');
+
+        // Loop through each anchor tag
+        navLinks.forEach(function (link) {
+        // Compare the href of the link with the current page URL
+        if (link.href === currentPage) {
+            // If it matches, add the 'active' class
+            link.parentElement.classList.add('active');
+        }
+        });
+    });
+    </script>
+
+
+</body>
+
+</html>

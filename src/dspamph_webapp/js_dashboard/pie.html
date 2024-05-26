@@ -1,0 +1,307 @@
+<!-- pie.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D-SpamPH Dashboard</title>
+
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Include Firebase SDK -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.3.0/firebase-app.js" defer></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.3.0/firebase-firestore.js" defer></script>
+
+    <!-- Pie chart js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js/dist/Chart.min.js"></script>
+
+    <link rel="icon" type="image/x-icon" src="\logo\spamPH.png">
+
+    <link rel="stylesheet" href="maindash.css">
+
+    <!-- Custom scripts -->
+    <script type="module" src="firebase-init.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" defer></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" defer></script>
+
+    <script type="module" src="firebase-init.js" defer></script>
+    <script src="main.js" defer></script>
+
+</head>
+
+<body>
+    <div class="header">
+        <div class="nav">
+            <div class="admin">
+            <a>Spam Dashboard |</a>
+            <button type="button" class="searchBttn" onclick="backPHP()"><img src="images/back.png" height="25px" width="25px">
+                <i>Go Back To Portal</i></button>
+            </div>
+        </div>
+        <div class="ntc">
+            <img src="logo/spamPH.png" alt="D-SpamPH" height="80px" width="80px">
+            <div>
+                <strong class="ntctxt1">D-SpamPH</strong>
+                <small class="ntctxt2">A Spam Reporting Platform and Web Analytics</small>
+            </div>
+        </div>
+        <!-- Buttons for Catalogue, Pie Chart, Line Graph... -->
+        <div class="buttons-container">
+            <div class="navigation">
+                <ul>
+                    <li class="list">
+                        <a href="#" onclick="showHome()">
+                            <span class="icon">
+                                <img src="images/navhome.png" alt="Home Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 6px;">
+                                <span class="text">Home</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="#" onclick="showCatalogue()">
+                            <span class="icon">
+                                <img src="images/navcatalogue.png" alt="Catalogue Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Catalogue</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="#" onclick="showWordCloud()">
+                            <span class="icon">
+                                <img src="images/navwordcloud.png" alt="Word Cloud Icon" height="30px" width="30px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Word Cloud</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list active">
+                        <a href="#" onclick="showPie()">
+                            <span class="icon">
+                                <img src="images/navpie.png" alt="Pie Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Pie Chart</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="#" onclick="showLine()">
+                            <span class="icon">
+                                <img src="images/navline.png" alt="Line Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Line Graph</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="pie-rounded-container">
+            <div id="pie-chart-container">
+                <canvas id="pie-chart" style="height: 500px; width: 800px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+<script>
+    function showHome() {
+        window.location.href = 'Dashboard-main.html';
+    }
+    function showCatalogue() {
+        window.location.href = 'catalogue.html';
+    }
+
+    function showWordCloud() {
+        window.location.href = 'wordcloud.html';
+    }
+
+    function showPie() {
+        window.location.href = 'pie.html';
+    }
+
+    function showLine() {
+        window.location.href = 'line.html';
+    }
+
+// Function to render pie chart
+async function renderPieChart(data) {
+    if (!data) {
+        console.error('Data is undefined.');
+        return;
+    }
+
+    const telcoCount = {};
+
+    data.forEach(entry => {
+        const telcoName = entry.telco;
+
+        if (telcoName) {
+            if (telcoName in telcoCount) {
+                telcoCount[telcoName]++;
+            } else {
+                telcoCount[telcoName] = 1;
+            }
+        }
+    });
+
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    const pieChartCanvas = document.getElementById('pie-chart');
+    if (pieChartCanvas) {
+        const pieChartCtx = pieChartCanvas.getContext('2d');
+
+        const telcoColors = {
+            'Smart Communications': '#449e48',  
+            'Globe Telecom': '#4361ee',         
+            'DITO Telecommunity': '#f01e2c',    
+            'Unknown Telco': '#8c8c8c'          
+        };
+
+        const pieChart = new Chart(pieChartCtx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(telcoCount),
+                datasets: [{
+                    data: Object.values(telcoCount),
+                    backgroundColor: Object.keys(telcoCount).map(telco => telcoColors[telco]),
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Spam Data Distribution by Telco',
+                    fontColor: '#2a1300', 
+                    fontSize: 30, 
+                    fontWeight: 'bold', 
+                },
+                legend: {
+                    labels: {
+                        fontColor: '#2a1300', 
+                        fontSize: 15,
+                    }
+                }
+            }
+        });
+            }
+}
+
+// Function to filter and render Firestore data based on telco
+function renderFirestoreDataAsTables(telco) {
+    console.log('Selected Telco:', telco);
+    fetch('http://127.0.0.1:5000/get_firestore_data')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Data:', data);
+            if (data) {
+                const categorizedData = categorizeTelcoPrefixes(data);
+                const filteredData = telco === 'All' ? data : categorizedData[telco];
+                if (filteredData) {
+                    const smartData = categorizedData['Smart Communications'] || [];
+                    const globeData = categorizedData['Globe Telecom'] || [];
+                    const ditoData = categorizedData['DITO Telecommunity'] || [];
+
+                    renderPieChart(filteredData);
+                } else {
+                    console.error('Filtered data is undefined.');
+                }
+            } else {
+                console.error('Data is undefined.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+
+// Function to categorize telco prefixes
+function categorizeTelcoPrefixes(data) {
+    const categorizedData = {};
+
+    data.forEach(entry => {
+        const spamSenderNumber = entry.spam_sender_number;
+
+        // Skip entries with invalid or missing spam_sender_number
+        if (!spamSenderNumber || !spamSenderNumber.startsWith('+639')) {
+            return;
+        }
+
+        const telcoPrefix = spamSenderNumber.substring(0, 6);
+        let telcoName = '';
+
+        if (isGlobePrefix(telcoPrefix)) {
+            telcoName = 'Globe Telecom';
+        } else if (isSmartPrefix(telcoPrefix)) {
+            telcoName = 'Smart Communications';
+        } else if (isDitoPrefix(telcoPrefix)) {
+            telcoName = 'DITO Telecommunity';
+        } else {
+            telcoName = 'Unknown Telco';
+        }
+
+        if (!categorizedData[telcoName]) {
+            categorizedData[telcoName] = [];
+        }
+
+        entry.telco = telcoName;
+        categorizedData[telcoName].push(entry);
+    });
+
+    return categorizedData;
+}
+
+// Function to check if a prefix belongs to Globe
+function isGlobePrefix(prefix) {
+    const globePrefixes = ['+639173', '+639175', '+639176', '+639178', '+639253', '+639255', '+639256', '+639257', '+639258', '+63905', '+63906', '+63915', '+63916', '+63917', '+63926', '+63927', '+63935', '+63936', '+63937', '+63945', '+63953', '+63954', '+63955', '+63956', '+63963', '+63965', '+63966', '+63967', '+63975', '+63976', '+63977', '+63978', '+63979', '+63995', '+63996', '+63997'];
+    return globePrefixes.includes(prefix);
+}
+
+// Function to check if a prefix belongs to Smart
+function isSmartPrefix(prefix) {
+    const smartPrefixes = ['+63907', '+63909', '+63910', '+63912', '+63930', '+63938', '+63946', '+63948', '+63950', '+63908', '+63918', '+63919', '+63920', '+63921', '+63928', '+63929', '+63939', '+63946', '+63947', '+63949', '+63951', '+63961', '+63998', '+63999', '+63922', '+63923', '+63924', '+63925', '+63931', '+63932', '+63933', '+63934', '+63940', '+63941', '+63942', '+63943', '+63973', '+63974'];
+    return smartPrefixes.includes(prefix);
+}
+
+// Function to check if a prefix belongs to DITO
+function isDitoPrefix(prefix) {
+    const ditoPrefixes = ['+63991', '+63992', '+63993', '+63994'];
+    return ditoPrefixes.includes(prefix);
+}
+
+// Initialize the dropdown
+document.addEventListener('DOMContentLoaded', function () {
+    // Ensure that jQuery is loaded before Bootstrap
+    const jQueryScript = document.createElement('script');
+    jQueryScript.src = 'https://code.jquery.com/jquery-3.5.1.slim.min.js';
+    jQueryScript.onload = function () {
+        const bootstrapScript = document.createElement('script');
+        bootstrapScript.src = 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js';
+        document.head.appendChild(bootstrapScript);
+    };
+    document.head.appendChild(jQueryScript);
+
+    renderFirestoreDataAsTables('All');
+});
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+    var currentPage = window.location.href;
+
+    // Get all the anchor tags in the navigation
+    var navLinks = document.querySelectorAll('.navigation a');
+
+    // Loop through each anchor tag
+    navLinks.forEach(function (link) {
+      // Compare the href of the link with the current page URL
+      if (link.href === currentPage) {
+        // If it matches, add the 'active' class
+        link.parentElement.classList.add('active');
+      }
+    });
+  });
+</script>
+</body>
+
+</html>

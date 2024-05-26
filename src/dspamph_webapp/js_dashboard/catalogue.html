@@ -1,0 +1,489 @@
+<!-- catalogue.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D-SpamPH Dashboard</title>
+
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Include Firebase SDK -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.3.0/firebase-app.js" defer></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.3.0/firebase-firestore.js" defer></script>
+
+    <!-- Pie chart js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js/dist/Chart.min.js"></script>
+
+    <link rel="icon" type="image/x-icon" src="\logo\spamPH.png">
+
+    <link rel="stylesheet" href="maindash.css">
+
+    <!-- Custom scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" defer></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" defer></script>
+
+    <script src="main.js" defer></script>
+    <!-- <script type="module" src="catalogue.js" defer></script> -->
+
+</head>
+
+<body>
+    <div class="header">
+        <div class="nav">
+            <div class="admin">
+                <a>Spam Dashboard |</a>
+                <button type="button" class="searchBttn" onclick="backPHP()">
+                    <img src="images/back.png" height="25px" width="25px">
+                    <i>Go Back To Portal</i>
+                </button>
+            </div>
+        </div>
+        <div class="ntc">
+            <img src="logo/spamPH.png" alt="D-SpamPH" height="80px" width="80px">
+            <div>
+                <strong class="ntctxt1">D-SpamPH</strong>
+                <small class="ntctxt2">A Spam Reporting Platform and Web Analytics</small>
+            </div>
+        </div>
+        <!-- Buttons for Catalogue, Pie Chart, Line Graph... -->
+        <div class="buttons-container">
+            <div class="navigation">
+                <ul>
+                    <li class="list">
+                        <a href="#" onclick="showHome()">
+                            <span class="icon">
+                                <img src="images/navhome.png" alt="Home Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 6px;">
+                                <span class="text">Home</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list active">
+                        <a href="#" onclick="showCatalogue()">
+                            <span class="icon">
+                                <img src="images/navcatalogue.png" alt="Catalogue Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Catalogue</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="#" onclick="showWordCloud()">
+                            <span class="icon">
+                                <img src="images/navwordcloud.png" alt="Word Cloud Icon" height="30px" width="30px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Word Cloud</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="#" onclick="showPie()">
+                            <span class="icon">
+                                <img src="images/navpie.png" alt="Pie Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Pie Chart</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="#" onclick="showLine()">
+                            <span class="icon">
+                                <img src="images/navline.png" alt="Line Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Line Graph</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="searchbar">
+                <input id="mobileNumberInput" type="text" placeholder="Search Mobile Number" onkeyup="handleKeyUp(event)">
+                <button type="button" onclick="searchMobileNumber()">
+                    <img src="images/search.png" height="25px" width="25px">
+                 </button>
+            </div>
+        </div>
+    </div>
+    <!-- Checkboxes for each table and show/hide buttons -->
+    <div class="checkbox-container">
+        <label>
+            <input type="checkbox" id="all-checkbox" checked> All
+        </label>
+        <label>
+            <input type="checkbox" id="smart-checkbox" checked> Smart
+        </label>
+        <label>
+            <input type="checkbox" id="globe-checkbox" checked> Globe
+        </label>
+        <label>
+            <input type="checkbox" id="dito-checkbox" checked> DITO
+        </label>
+        <label>
+            <input type="checkbox" id="unknown-checkbox" checked> Unknown Telco
+        </label>
+        <label>
+            <input type="checkbox" id="search-checkbox" checked> Search Results
+        </label>
+        <div class="checkbox-buttons">
+            <button class="dashboard-button show-hide-button" onclick="showAllTables()">Show All</button>
+            <button class="dashboard-button show-hide-button" onclick="hideAllTables()">Hide All</button>
+        </div>
+    </div>
+    <div class="cards">
+        <div class="table-rounded-container" id="all-container"></div>
+        <div class="gap"></div>
+        <div class="table-rounded-container" id="smart-container"></div>
+        <div class="gap"></div>
+        <div class="table-rounded-container" id="globe-container"></div>
+        <div class="gap"></div>
+        <div class="table-rounded-container" id="dito-container"></div>
+        <div class="gap"></div>
+        <div class="table-rounded-container" id="unknown-telco-container"></div>
+        <div class="gap"></div>
+        <div class="table-rounded-container" id="search-results-container"></div>
+    </div>
+
+<script>
+    function showHome() {
+        window.location.href = 'Dashboard-main.html';
+    }
+
+    function showCatalogue() {
+        window.location.href = 'catalogue.html';
+    }
+
+    function showWordCloud() {
+        window.location.href = 'wordcloud.html';
+    }
+
+    function showPie() {
+        window.location.href = 'pie.html';
+    }
+
+    function showLine() {
+        window.location.href = 'line.html';
+    }
+
+   // Add event listeners for checkboxes
+document.getElementById('all-checkbox').addEventListener('change', function () {
+    toggleTableVisibility('all-container', this.checked);
+});
+document.getElementById('smart-checkbox').addEventListener('change', function () {
+    toggleTableVisibility('smart-container', this.checked);
+});
+document.getElementById('globe-checkbox').addEventListener('change', function () {
+    toggleTableVisibility('globe-container', this.checked);
+});
+document.getElementById('dito-checkbox').addEventListener('change', function () {
+    toggleTableVisibility('dito-container', this.checked);
+});
+document.getElementById('unknown-checkbox').addEventListener('change', function () {
+    toggleTableVisibility('unknown-telco-container', this.checked);
+});
+document.getElementById('search-checkbox').addEventListener('change', function () {
+    toggleTableVisibility('search-results-container', this.checked);
+});
+
+    // Function to show all tables
+    function showAllTables() {
+        setAllTableVisibility(true);
+        checkAllCheckboxes(true);
+    }
+
+    // Function to hide all tables
+    function hideAllTables() {
+        setAllTableVisibility(false);
+        checkAllCheckboxes(false);
+    }
+
+    // Function to check or uncheck all checkboxes
+    function checkAllCheckboxes(checked) {
+        const checkboxes = document.querySelectorAll('.checkbox-container input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = checked;
+        });
+    }
+
+    // Function to toggle visibility of all tables
+    function setAllTableVisibility(isVisible) {
+        const tableContainers = document.querySelectorAll('.table-rounded-container');
+        tableContainers.forEach(container => {
+            container.style.display = isVisible ? 'block' : 'none';
+        });
+    }
+
+    // Function to toggle visibility of a specific table
+    function toggleTableVisibility(containerId, isVisible) {
+        const container = document.getElementById(containerId);
+        if (container) {
+            container.style.display = isVisible ? 'block' : 'none';
+        }
+    }
+
+// Declare categorizedData using let or const
+let categorizedData = {};
+
+// Declare containerId variable outside of the functions
+let containerId;
+
+// Function to clear the data cache
+function clearDataCache() {
+    categorizedData = {};
+}
+
+// Function to clear the contents of all table containers
+function clearAllTables() {
+    const tableContainers = document.querySelectorAll('.table-rounded-container');
+    tableContainers.forEach(container => {
+        container.innerHTML = '';  // Clear the HTML content
+    });
+}
+
+// Function to handle keyup event on the input field
+function handleKeyUp(event) {
+    // Check if the pressed key is Enter (key code 13)
+    if (event.keyCode === 13) {
+        // Trigger the searchMobileNumber function
+        searchMobileNumber();
+    }
+}
+
+// Function to search mobile number
+function searchMobileNumber() {
+    const searchInput = document.getElementById('mobileNumberInput').value.trim();
+
+    if (searchInput === '') {
+        alert('Please enter a mobile number for search.');
+        return;
+    }
+
+    // Encode the search input to handle special characters
+    const encodedSearchInput = encodeURIComponent(searchInput);
+
+    containerId = 'search-results-container';  // Set the containerId
+    const container = document.getElementById(containerId);
+
+    function renderSearchResultsTable() {
+        // Send a request to Flask server
+        fetch(`http://127.0.0.1:5000/search_mobile_number?number=${encodedSearchInput}`)
+            .then(response => response.json())
+            .then(searchResults => {
+                console.log('Data received for rendering table:', searchResults);
+
+                if (searchResults && searchResults.length > 0) {
+                    // Update the existing categorizedData variable
+                    categorizedData = categorizeTelcoPrefixes(searchResults);
+                    const searchResultsData = categorizedData['Search Results'] || [];
+
+                    console.log('SearchResults:', searchResults);
+                    // Render the search results in the new table
+                    renderTable(containerId, 'Search Results', searchResults, 'images/search-results-table.png');
+
+                    // Show only the Search Results table
+                    setAllTableVisibility(false);
+                    toggleTableVisibility(containerId, true);
+                    checkAllCheckboxes(false);
+                    document.getElementById('search-checkbox').checked = true;
+                } else {
+                    console.error('No data to render.');
+                    // Notify the user if there are no matching results
+                    alert('No matching results found.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    renderSearchResultsTable();
+}
+
+// Function to render a table into a container
+function renderTable(containerId, title, data, imageSrc) {
+    const container = document.getElementById(containerId);
+    if (!container || !Array.isArray(data) || data.length === 0) {
+        console.error('Invalid data or container not found');
+        return;
+    }
+
+    const table = document.createElement('table');
+
+    // Mapping original keys to desired labels
+    const keyMapping = {
+        'date_time_received': 'Date and Time Received',
+        'spam_content': 'Spam Content',
+        'spam_sender_number': 'Sender',
+        'telco': 'Telco'
+    };
+
+    // Create table header
+    const thead = table.createTHead();
+    const headerRow = thead.insertRow();
+    for (const key of Object.keys(data[0])) {
+        const th = document.createElement('th');
+        th.textContent = keyMapping[key] || key;
+        headerRow.appendChild(th);
+    }
+
+    // Create table rows
+    const tbody = table.createTBody();
+    for (const entry of data) {
+        const row = tbody.insertRow();
+        for (const key of Object.keys(entry)) {
+            const cell = row.insertCell();
+            cell.textContent = entry[key];
+        }
+    }
+
+    // Create the header container
+    const headerContainer = document.createElement('div');
+    headerContainer.className = 'header-container';
+    headerContainer.style.marginLeft = '30px';
+    headerContainer.style.marginTop = '10px';
+
+    // Create the header image
+    const headerImage = document.createElement('img');
+    headerImage.src = imageSrc || 'all-spam-table.png';
+    headerImage.alt = 'Table Icon';
+    headerImage.height = 40;
+
+    // Create the header h3 element
+    const headerText = document.createElement('h3');
+    headerText.textContent = title;
+
+    // Append the image and h3 to the header container
+    headerContainer.appendChild(headerImage);
+    headerContainer.appendChild(headerText);
+
+    // Append the header container to the parent container
+    container.appendChild(headerContainer);
+
+    // Append the table to the container
+    container.appendChild(table);
+}
+
+// Function to categorize telco prefixes
+function categorizeTelcoPrefixes(data) {
+    const categorizedData = {};
+
+    data.forEach(entry => {
+        const spamSenderNumber = entry.spam_sender_number;
+
+        // Skip entries with invalid or missing spam_sender_number
+        if (!spamSenderNumber || !spamSenderNumber.startsWith('+639')) {
+            return;
+        }
+
+        const telcoPrefix = spamSenderNumber.substring(0, 6);
+        let telcoName = '';
+
+        if (isGlobePrefix(telcoPrefix)) {
+            telcoName = 'Globe Telecom';
+        } else if (isSmartPrefix(telcoPrefix)) {
+            telcoName = 'Smart Communications';
+        } else if (isDitoPrefix(telcoPrefix)) {
+            telcoName = 'DITO Telecommunity';
+        } else {
+            telcoName = 'Unknown Telco';
+        }
+
+        if (!categorizedData[telcoName]) {
+            categorizedData[telcoName] = [];
+        }
+
+        entry.telco = telcoName;
+        categorizedData[telcoName].push(entry);
+    });
+
+    return categorizedData;
+}
+
+// Function to check if a prefix belongs to Globe
+function isGlobePrefix(prefix) {
+    const globePrefixes = ['+639173', '+639175', '+639176', '+639178', '+639253', '+639255', '+639256', '+639257', '+639258', '+63905', '+63906', '+63915', '+63916', '+63917', '+63926', '+63927', '+63935', '+63936', '+63937', '+63945', '+63953', '+63954', '+63955', '+63956', '+63963', '+63965', '+63966', '+63967', '+63975', '+63976', '+63977', '+63978', '+63979', '+63995', '+63996', '+63997'];
+    return globePrefixes.includes(prefix);
+}
+
+// Function to check if a prefix belongs to Smart
+function isSmartPrefix(prefix) {
+    const smartPrefixes = ['+63907', '+63909', '+63910', '+63912', '+63930', '+63938', '+63946', '+63948', '+63950', '+63908', '+63918', '+63919', '+63920', '+63921', '+63928', '+63929', '+63939', '+63946', '+63947', '+63949', '+63951', '+63961', '+63998', '+63999', '+63922', '+63923', '+63924', '+63925', '+63931', '+63932', '+63933', '+63934', '+63940', '+63941', '+63942', '+63943', '+63973', '+63974'];
+    return smartPrefixes.includes(prefix);
+}
+
+// Function to check if a prefix belongs to DITO
+function isDitoPrefix(prefix) {
+    const ditoPrefixes = ['+63991', '+63992', '+63993', '+63994'];
+    return ditoPrefixes.includes(prefix);
+}
+
+// Function to filter and render Firestore data based on telco
+function renderFirestoreDataAsTables(telco) {
+    console.log('Selected Telco:', telco);
+    fetch('http://127.0.0.1:5000/get_firestore_data')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Data:', data);
+            if (data) {
+                const categorizedData = categorizeTelcoPrefixes(data);
+                const filteredData = telco === 'All' ? data : categorizedData[telco];
+                if (filteredData) {
+                    // Declare variables for each telco's data
+                    const smartData = categorizedData['Smart Communications'] || [];
+                    const globeData = categorizedData['Globe Telecom'] || [];
+                    const ditoData = categorizedData['DITO Telecommunity'] || [];
+                    const unknownTelcoData = categorizedData['Unknown Telco'] || [];
+
+                    // Calls to renderTable with different images for each table
+                    renderTable('all-container', 'All Spam Data', filteredData, 'images/all-spam-table.png');
+                    renderTable('smart-container', 'Smart Spam Data', smartData, 'images/smart-table.png');
+                    renderTable('globe-container', 'Globe Spam Data', globeData, 'images/globe-table.png');
+                    renderTable('dito-container', 'DITO Spam Data', ditoData, 'images/dito-table.png');
+                    renderTable('unknown-telco-container', 'Unknown Telco Spam Data', unknownTelcoData, 'images/unknown-telco-table.png');
+
+                    console.error('Filtered data is undefined.');
+                }
+            } else {
+                console.error('Data is undefined.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+// Function to toggle visibility of all tables
+function setAllTableVisibility(isVisible) {
+    const tableContainers = document.querySelectorAll('.table-rounded-container');
+    tableContainers.forEach(container => {
+        container.style.display = isVisible ? 'block' : 'none';
+    });
+}
+
+// Function to toggle visibility of a specific table
+function toggleTableVisibility(containerId, isVisible) {
+    const container = document.getElementById(containerId);
+    if (container) {
+        container.style.display = isVisible ? 'block' : 'none';
+    }
+}
+
+// Initialize your scripts
+document.addEventListener('DOMContentLoaded', function () {
+    // Ensure that jQuery is loaded before Bootstrap
+    const jQueryScript = document.createElement('script');
+    jQueryScript.src = 'https://code.jquery.com/jquery-3.5.1.slim.min.js';
+    jQueryScript.onload = function () {
+        const bootstrapScript = document.createElement('script');
+        bootstrapScript.src = 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js';
+        document.head.appendChild(bootstrapScript);
+    };
+    document.head.appendChild(jQueryScript);
+
+    // Initialize your scripts
+    renderFirestoreDataAsTables('All');
+});
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,407 @@
+<!-- Dashboard-main.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D-SpamPH Dashboard</title>
+
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Include Bootstrap JS, jQuery, and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+
+    <!-- Include Firebase SDK -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.3.0/firebase-app.js" defer></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.3.0/firebase-firestore.js" defer></script>
+
+    <!-- Pie chart js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js/dist/Chart.min.js"></script>
+
+    <link rel="icon" type="image/x-icon" src="\logo\spamPH.png">
+
+    <link rel="stylesheet" href="maindash.css">
+
+    <script src="main.js" defer></script>
+
+</head>
+
+<body>
+    <div class="header">
+        <div class="nav">
+            <div class="admin">
+                <a>Spam Dashboard |</a>
+                <button type="button" class="searchBttn" onclick="backPHP()">
+                    <img src="images/back.png" height="25px" width="25px">
+                    <i>Go Back To Portal</i>
+                </button>
+            </div>
+        </div>
+        <div class="ntc">
+            <img src="logo/spamPH.png" alt="D-SpamPH" height="80px" width="80px">
+            <div>
+                <strong class="ntctxt1">D-SpamPH</strong>
+                <small class="ntctxt2">A Spam Reporting Platform and Web Analytics</small>
+            </div>
+        </div>
+        <!-- Buttons for Catalogue, Pie Chart, Line Graph... -->
+        <div class="buttons-container">
+            <div class="navigation">
+                <ul>
+                    <li class="list active">
+                        <a href="#" onclick="showHome()">
+                            <span class="icon">
+                                <img src="images/navhome.png" alt="Home Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 6px;">
+                                <span class="text">Home</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="#" onclick="showCatalogue()">
+                            <span class="icon">
+                                <img src="images/navcatalogue.png" alt="Catalogue Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Catalogue</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="#" onclick="showWordCloud()">
+                            <span class="icon">
+                                <img src="images/navwordcloud.png" alt="Word Cloud Icon" height="30px" width="30px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Word Cloud</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="#" onclick="showPie()">
+                            <span class="icon">
+                                <img src="images/navpie.png" alt="Pie Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Pie Chart</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="#" onclick="showLine()">
+                            <span class="icon">
+                                <img src="images/navline.png" alt="Line Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Line Graph</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns-container">
+            <!-- Carousel Section -->
+            <div class="column">
+                <div class="row">
+                    <div id="carousel" class="carousel slide" data-ride="carousel">
+                        <div class="rounded-container">
+                            <!-- Carousel Item 1 -->
+                            <div class="carousel-item active">
+                                <h3 style="font-weight: bold;">Spam Catalogue</h3>
+                                <p>Explore a comprehensive catalogue of spam messages, providing insights into various spam behaviors and patterns.</p>
+                                <img src="images/catalog.png" alt="" class="fit-image">
+                            </div>
+                            <!-- Carousel Item 2 -->
+                            <div class="carousel-item">
+                                <h3 style="font-weight: bold;">Word Cloud</h3>
+                                <p>A graphical representation that highlights the most prominent words found in a set of spam messages.</p>
+                                <img src="images/wordc.png" alt="" class="fit-image">
+                            </div>
+                            <!-- Carousel Item 3 -->
+                            <div class="carousel-item">
+                                <h3 style="font-weight: bold;">Pie Chart</h3>
+                                <p>Visualize spam data through an interactive pie chart, illustrating the distribution of spam categories.</p>
+                                <img src="images/pie-chart.png" alt="" class="fit-image" style="width: 200px;">
+                            </div>
+                            <!-- Carousel Item 4 -->
+                            <div class="carousel-item">
+                                <h3 style="font-weight: bold;">Line Graph</h3>
+                                <p>Analyze trends and patterns in spam behavior over time using a dynamic line graph.</p>
+                                <img src="images/line-graph.png" alt="" class="fit-image" style="width: 200px;">
+                            </div>
+                            <!-- Carousel Item 5 -->
+                            <div class="carousel-item">
+                                <h3 style="font-weight: bold;">Spam Count</h3>
+                                <p>Provides a numerical representation of the total volume of spam messages received over a specific period.</p>
+                                <img src="images/spamcount.png" alt="" class="fit-image">
+                            </div>
+                            <!-- Carousel Item 6 -->
+                            <div class="carousel-item">
+                                <h3 style="font-weight: bold;">Latest Spam Trends</h3>
+                                <p>Offers insights into the most recent patterns and characteristics of spam messages.</p>
+                                <img src="images/latestspam.png" alt="" class="fit-image">
+                            </div>
+                            <!-- Carousel Item 7 -->
+                            <div class="carousel-item">
+                                <h3 style="font-weight: bold;">Top Spammer</h3>
+                                <p>Identifies and ranks the entities or sources responsible for generating the highest volume of spam.</p>
+                                <img src="images/topspammer.png" alt="" class="fit-image">
+                            </div>
+                        </div>
+
+                        <div class="carousel-controls-container">
+                            <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                <!-- Spam Count Container -->
+                <div class="column">
+                    <div class="spam-count">
+                        <div class="table-rounded-container" style="height: 400px;">
+                            <h3>Spam Count</h3>
+                            <table id="spamCountTable" class="table">
+                                <tbody>
+                                    <tr>
+                                        <td id="spamCount" style="color: #ff6f61; font-size: 120px; font-weight: bold; padding-left: 85px;">Loading...</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #ff6f61; font-size: 25px; font-weight: 500; padding-left: 55px;">Total Spam Messages</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #2a1300; font-size: 14px; padding-left: 90px;">As of <span id="spamCountTimestamp">Loading...</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+            <div class="row">
+            <!-- Latest Spam Format Container -->
+            <div class="latest-spam">
+                <div class="rounded-container">
+                    <h3>Latest Spam Trends</h3>
+                    <table id="latestSpamTable" class="table">
+                        <thead>
+                            <tr>
+                                <th style="color: #2a1300; font-weight: bold;">Message</th>
+                                <th style="color: #2a1300; font-weight: bold;">Date/Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table rows will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Latest Spam Format Container -->
+            <div class="top-spammer">
+                <div class="rounded-container">
+                    <h3>Top Spammer</h3>
+                    <table id="topSpammerTable" class="table">
+                        <thead>
+                            <tr>
+                                <th style="color: #2a1300; font-weight: bold;">Sender</th>
+                                <th style="color: #2a1300; font-weight: bold;">Spam Count</th>
+                                <th style="color: #2a1300; font-weight: bold; white-space: pre-line;">Messages</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table rows will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+            </div>
+            <script>
+            function showLatest() {
+                function renderLatestSpamTable() {
+                    fetch('http://127.0.0.1:5000/get_firestore_data')
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Latest Spam Data:', data);
+                            if (Array.isArray(data) && data.length > 0) {
+                                // Filter out objects without expected properties
+                                const validData = data.filter(item =>
+                                    item.date_time_received &&
+                                    item.spam_content &&
+                                    item.spam_sender_number
+                                );
+
+                                if (validData.length > 0) {
+                                    const tableBody = document.getElementById('latestSpamTable').getElementsByTagName('tbody')[0];
+                                    tableBody.innerHTML = '';
+
+                                    // Display the top 5 latest spam messages
+                                    for (let i = 0; i < Math.min(3, validData.length); i++) {
+                                        const spamMessage = validData[i];
+                                        const row = tableBody.insertRow();
+                                        const cell1 = row.insertCell(0);
+                                        const cell2 = row.insertCell(1);
+
+                                        // Set font color to white
+                                        cell1.textContent = spamMessage.spam_content;
+                                        cell1.style.color = '#2a1300';
+
+                                        cell2.textContent = spamMessage.date_time_received;
+                                        cell2.style.color = '#2a1300';
+
+                                        // Calculate and update the spam count
+                                        const spamCount = validData.length;
+                                        const timestamp = new Date().toLocaleString();
+                                        updateSpamCount(spamCount, timestamp);
+                                    }
+                                } else {
+                                    console.error('Valid Spam Data is undefined or empty.');
+                                }
+                            } else {
+                                console.error('Latest Spam Data is not an array or is empty.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching data:', error);
+                        });
+                }
+
+                // Call the function to render the latest spam table
+                renderLatestSpamTable();
+            }
+
+                // Call the showLatest function when the page loads
+                document.addEventListener('DOMContentLoaded', showLatest);
+
+                // Function to update the spam count
+                function updateSpamCount(count, timestamp) {
+                    const spamCountElement = document.getElementById('spamCount');
+                    const timestampElement = document.getElementById('spamCountTimestamp');
+
+                    spamCountElement.textContent = count;
+                    timestampElement.textContent = timestamp;
+                }
+
+
+                // Function to fetch and update the spam count separately
+                function fetchAndRenderSpamCount() {
+                    fetch('http://127.0.0.1:5000/get_firestore_data')
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Spam Count Data:', data);
+                            if (data && data.count && data.timestamp) {
+                                updateSpamCount(data.count, data.timestamp);
+                            } else {
+                                console.error('Invalid Spam Count Data:', data);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching spam count data:', error);
+                        });
+                }
+
+                // Call the function to fetch and render spam count when the page loads
+                document.addEventListener('DOMContentLoaded', fetchAndRenderSpamCount);
+
+            function showTop(){
+                function renderTopSpammerTable() {
+    fetch('http://127.0.0.1:5000/get_firestore_data')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Top Spammer Data:', data);
+            if (Array.isArray(data) && data.length > 0) {
+                // Filter out objects without expected properties
+                const validData = data.filter(item =>
+                    item.spam_sender_number
+                );
+
+                if (validData.length > 0) {
+                    const tableBody = document.getElementById('topSpammerTable').getElementsByTagName('tbody')[0];
+                    tableBody.innerHTML = '';
+
+                    // Create an object to store spam counts and messages for each sender number
+                    const spamDataMap = {};
+
+                    // Iterate through the data to count spam occurrences and store messages for each sender
+                    validData.forEach(spamMessage => {
+                        const senderNumber = spamMessage.spam_sender_number;
+                        spamDataMap[senderNumber] = spamDataMap[senderNumber] || {
+                            count: 0,
+                            messages: []
+                        };
+                        spamDataMap[senderNumber].count += 1;
+                        spamDataMap[senderNumber].messages.push(spamMessage.spam_content);
+                    });
+
+                    // Sort the sender numbers based on spam count in descending order
+                    const sortedSenderNumbers = Object.keys(spamDataMap).sort((a, b) => spamDataMap[b].count - spamDataMap[a].count);
+
+                   // Display the top 3 spammers
+                    for (let i = 0; i < Math.min(3, sortedSenderNumbers.length); i++) {
+                        const senderNumber = sortedSenderNumbers[i];
+                        const spamData = spamDataMap[senderNumber];
+
+                        const row = tableBody.insertRow();
+                        const cell1 = row.insertCell(0);
+                        const cell2 = row.insertCell(1);
+                        const cell3 = row.insertCell(2);
+
+                        // Set font color to white
+                        cell1.textContent = senderNumber;
+                        cell1.style.color = '#2a1300';
+
+                        cell2.textContent = spamData.count;
+                        cell2.style.color = '#2a1300';
+
+                        // Join messages with line breaks
+                        cell3.innerHTML = spamData.messages.join('<br><br>');
+                        cell3.style.color = '#2a1300';
+                    }
+                } else {
+                    console.error('Valid Spam Data is undefined or empty.');
+                }
+            } else {
+                console.error('Latest Spam Data is not an array or is empty.');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+}
+                renderTopSpammerTable();
+            }
+
+            // Call the showTop function when the page loads
+            document.addEventListener('DOMContentLoaded', showTop);
+
+
+                function showHome() {
+                    window.location.href = 'Dashboard-main.html';
+                }
+
+                function showCatalogue() {
+                    window.location.href = 'catalogue.html';
+                }
+
+                function showWordCloud() {
+                    window.location.href = 'wordcloud.html';
+                }
+
+                function showPie() {
+                    window.location.href = 'pie.html';
+                }
+
+                function showLine() {
+                    window.location.href = 'line.html';
+                }
+
+            </script>
+</body>
+
+</html>

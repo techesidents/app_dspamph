@@ -1,0 +1,686 @@
+<!-- pie.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D-SpamPH Dashboard</title>
+
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Include Firebase SDK -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.3.0/firebase-app.js" defer></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.3.0/firebase-firestore.js" defer></script>
+
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script src="chart.min.js"></script>
+
+    <link rel="icon" type="image/x-icon" src="\logo\spamPH.png">
+
+    <link rel="stylesheet" href="maindash.css">
+
+    <!-- Custom scripts -->
+    <script type="module" src="firebase-init.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" defer></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" defer></script>
+    <script type="module" src="firebase-init.js" defer></script>
+    <script src="main.js" defer></script>
+</head>
+
+<body>
+    <div class="header">
+        <div class="nav">
+            <div class="admin">
+            <a>Spam Dashboard |</a>
+            <button type="button" class="searchBttn" onclick="backPHP()"><img src="images/back.png" height="25px" width="25px">
+                <i>Go Back To Portal</i></button>
+            </div>
+        </div>
+        <div class="ntc">
+            <img src="logo/spamPH.png" alt="D-SpamPH" height="80px" width="80px">
+            <div>
+                <strong class="ntctxt1">D-SpamPH</strong>
+                <small class="ntctxt2">A Spam Reporting Platform and Web Analytics</small>
+            </div>
+        </div>
+        <!-- Buttons for Catalogue, Pie Chart, Line Graph... -->
+        <div class="buttons-container">
+            <div class="navigation">
+                <ul>
+                    <li class="list">
+                        <a href="#" onclick="showHome()">
+                            <span class="icon">
+                                <img src="images/navhome.png" alt="Home Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 6px;">
+                                <span class="text">Home</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="#" onclick="showCatalogue()">
+                            <span class="icon">
+                                <img src="images/navcatalogue.png" alt="Catalogue Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Catalogue</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="#" onclick="showWordCloud()">
+                            <span class="icon">
+                                <img src="images/navwordcloud.png" alt="Word Cloud Icon" height="30px" width="30px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Word Cloud</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list">
+                        <a href="#" onclick="showPie()">
+                            <span class="icon">
+                                <img src="images/navpie.png" alt="Pie Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Pie Chart</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="list active">
+                        <a href="#" onclick="showLine()">
+                            <span class="icon">
+                                <img src="images/navline.png" alt="Line Icon" height="20px" width="20px" style="margin-right: 5px; margin-bottom: 3px;">
+                                <span class="text">Line Graph</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="checkbox-container">
+        <label>
+            <input type="checkbox" id="line-checkbox" class="dashboard-checkbox line-bar-checkbox" checked> Line
+        </label>
+        <label>
+            <input type="checkbox" id="bar-checkbox" class="dashboard-checkbox line-bar-checkbox" checked> Bar
+        </label>
+        <label>
+            <input type="checkbox" id="smart-checkbox" checked> Smart
+        </label>
+        <label>
+            <input type="checkbox" id="globe-checkbox" checked> Globe
+        </label>
+        <label>
+            <input type="checkbox" id="dito-checkbox" checked> DITO
+        </label>
+        <label>
+            <input type="checkbox" id="unknown-checkbox" checked> Unknown Telco
+        </label>
+        <div class="checkbox-buttons">
+            <button class="dashboard-button show-hide-button" onclick="showAllTables()">Show All</button>
+            <button class="dashboard-button show-hide-button" onclick="hideAllTables()">Hide All</button>
+        </div>
+    </div>
+        <!-- Add a new canvas for the bar chart -->
+        <div class="cards">
+            <!-- Create chart containers for each telco -->
+            <div class="column">
+                <div id="smart-chart-container" class="chart-container">
+                    <h3> Smart Line Graph </h3>
+                    <canvas id="smart-line-chart" width="900px" height="400px"></canvas>
+                </div>
+            </div>
+            <div class="column">
+                <div id="globe-chart-container" class="chart-container">
+                    <h3> Globe Line Graph </h3>
+                    <canvas id="globe-line-chart" width="900px" height="400px"></canvas>
+                </div>
+            </div>
+            <div class="column">
+                <div id="dito-chart-container" class="chart-container">
+                    <h3> DITO Line Graph </h3>
+                    <canvas id="dito-line-chart" width="900px" height="400px"></canvas>
+                </div>
+            </div>
+            <div class="column">
+                <div id="unknown-chart-container" class="chart-container">
+                    <h3> Unknown Telco Line Graph </h3>
+                    <canvas id="unknown-line-chart" width="900px" height="400px"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="cards">
+            <div class="column">
+                <div id="smart-bar-chart-container" class="chart-container">
+                    <h3> Smart Bar Graph </h3>
+                    <canvas id="smart-bar-chart" width="900px" height="400px"></canvas>
+                </div>
+            </div>
+            <div class="column">
+                <div id="globe-bar-chart-container" class="chart-container">
+                    <h3> Globe Bar Graph </h3>
+                    <canvas id="globe-bar-chart" width="900px" height="400px"></canvas>
+                </div>
+            </div>
+            <div class="column">
+                <div id="dito-bar-chart-container" class="chart-container">
+                    <h3> DITO Bar Graph </h3>
+                    <canvas id="dito-bar-chart" width="900px" height="400px"></canvas>
+                </div>
+            </div>
+            <div class="column">
+                <div id="unknown-bar-chart-container" class="chart-container">
+                    <h3> Unknown Telco Bar Graph </h3>
+                    <canvas id="unknown-bar-chart" width="900px" height="400px"></canvas>
+                </div>
+            </div>
+        </div>
+
+<script>
+    function showHome() {
+        window.location.href = 'Dashboard-main.html';
+    }
+    function showCatalogue() {
+        window.location.href = 'catalogue.html';
+    }
+
+    function showWordCloud() {
+        window.location.href = 'wordcloud.html';
+    }
+
+    function showPie() {
+        window.location.href = 'pie.html';
+    }
+
+    function showLine() {
+        window.location.href = 'line.html';
+    }
+
+        // Function to toggle visibility of a specific table
+        function toggleTableVisibility(containerId, isVisible) {
+        const container = document.getElementById(containerId);
+        if (container) {
+            container.style.display = isVisible ? 'block' : 'none';
+        }
+    }
+
+    // Add event listener for the Line checkbox
+    document.getElementById('line-checkbox').addEventListener('change', function () {
+        toggleTableVisibility('smart-chart-container', this.checked);
+        toggleTableVisibility('globe-chart-container', this.checked);
+        toggleTableVisibility('dito-chart-container', this.checked);
+        toggleTableVisibility('unknown-chart-container', this.checked);
+
+        });
+
+        // Add event listener for the Bar checkbox
+        document.getElementById('bar-checkbox').addEventListener('change', function () {
+            toggleTableVisibility('smart-bar-chart-container', this.checked);
+            toggleTableVisibility('globe-bar-chart-container', this.checked);
+            toggleTableVisibility('dito-bar-chart-container', this.checked);
+            toggleTableVisibility('unknown-bar-chart-container', this.checked);
+
+        });
+
+        // Add event listeners for checkboxes
+        document.getElementById('smart-checkbox').addEventListener('change', function () {
+            toggleTableVisibility('smart-chart-container', this.checked);
+            toggleTableVisibility('smart-bar-chart-container', this.checked);
+        });
+        document.getElementById('globe-checkbox').addEventListener('change', function () {
+            toggleTableVisibility('globe-chart-container', this.checked);
+            toggleTableVisibility('globe-bar-chart-container', this.checked);
+        });
+        document.getElementById('dito-checkbox').addEventListener('change', function () {
+            toggleTableVisibility('dito-chart-container', this.checked);
+            toggleTableVisibility('dito-bar-chart-container', this.checked);
+        });
+        document.getElementById('unknown-checkbox').addEventListener('change', function () {
+            toggleTableVisibility('unknown-chart-container', this.checked);
+            toggleTableVisibility('unknown-bar-chart-container', this.checked);
+        });
+
+    // Function to show all tables
+    function showAllTables() {
+        setAllTableVisibility(true);
+        checkAllCheckboxes(true);
+        showAllLineCharts();
+        showAllBarCharts();
+    }
+
+    // Function to hide all tables
+    function hideAllTables() {
+        setAllTableVisibility(false);
+        checkAllCheckboxes(false);
+    }
+
+    // Function to check or uncheck all checkboxes
+    function checkAllCheckboxes(checked) {
+        const checkboxes = document.querySelectorAll('.checkbox-container input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = checked;
+        });
+    }
+
+    // Function to toggle visibility of all tables
+    function setAllTableVisibility(isVisible) {
+        const tableContainers = document.querySelectorAll('.chart-container');
+        tableContainers.forEach(container => {
+            container.style.display = isVisible ? 'block' : 'none';
+        });
+    }
+
+    // Add the following function to toggle between Line and Bar charts
+    function toggleChartType(chartType) {
+        hideAllCharts();
+        hideAllContainers();
+        hideAllBarCharts();
+
+        if (chartType === 'line') {
+            showAllLineCharts();
+        } else if (chartType === 'bar') {
+            showAllBarCharts();
+        }
+
+        updateActiveButton(chartType);
+    }
+
+        // Functions to show and hide Line charts
+        function showAllLineCharts() {
+            showBarChart('smart-chart-container');
+            showLineChart('smart-line-chart');
+            showBarChart('globe-chart-container');
+            showLineChart('globe-line-chart');
+            showBarChart('dito-chart-container');
+            showLineChart('dito-line-chart');
+            showBarChart('unknown-chart-container');
+            showLineChart('unknown-line-chart');
+        }
+
+        function showLineChart(chartId) {
+            const chart = document.getElementById(chartId);
+            if (chart) {
+                chart.style.display = 'block';
+            }
+        }
+
+        // Function to hide a specific Bar chart
+        function hideLineChart(chartId) {
+            const chart = document.getElementById(chartId);
+            if (chart) {
+                chart.style.display = 'none';
+            }
+        }
+
+        // Add the following functions to show and hide Line charts
+        function hideAllLineCharts() {
+            hideLineChart('smart-line-chart');
+            hideLineChart('globe-line-chart');
+            hideLineChart('dito-line-chart');
+            hideLineChart('unknown-line-chart');
+        }
+
+        function hideAllCharts() {
+            hideChart('smart-line-chart');
+            hideChart('globe-line-chart');
+            hideChart('dito-line-chart');
+            hideChart('unknown-line-chart');
+
+            hideChart('smart-bar-chart');
+            hideChart('globe-bar-chart');
+            hideChart('dito-bar-chart');
+            hideChart('unknown-bar-chart');
+        }
+
+        function hideAllContainers() {
+            hideContainer('smart-chart-container');
+            hideContainer('globe-chart-container');
+            hideContainer('dito-chart-container');
+            hideContainer('unknown-chart-container');
+
+            hideContainer('smart-bar-chart-container');
+            hideContainer('globe-bar-chart-container');
+            hideContainer('dito-bar-chart-container');
+            hideContainer('unknown-bar-chart-container');
+        }
+
+
+        function hideChart(chartId) {
+            const chart = document.getElementById(chartId);
+            if (chart) {
+                chart.style.display = 'none';
+            }
+        }
+
+        function hideContainer(containerId) {
+            const container = document.getElementById(containerId);
+            if (container) {
+                container.style.display = 'none';
+            }
+        }
+
+        // Add the following function to update the active button
+        function updateActiveButton(chartType) {
+            const buttons = document.querySelectorAll('.line-bar-button');
+            buttons.forEach(button => {
+                if (button.innerText.toLowerCase() === chartType) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        }
+
+    function fetchAndRenderLineGraph() {
+    // Fetch data from Flask endpoint
+    fetch('http://127.0.0.1:5000/get_firestore_data')
+        .then(response => response.json())
+        .then(data => {
+            // Sort data by date_time_received
+            data.sort((a, b) => a.date_time_received - b.date_time_received);
+
+            // Function to categorize telco prefixes and count spam messages per month per telco
+            function categorizeTelcoPrefixes(data) {
+                const categorizedData = {
+                    Smart: { labels: [], values: [] },
+                    Globe: { labels: [], values: [] },
+                    DITO: { labels: [], values: [] },
+                    Unknown: { labels: [], values: [] }
+                };
+
+                const spamCountPerMonth = {};
+                const maxSpamCountPerMonth = {};
+
+                // Iterate through data to count spam messages per month per telco
+                data.forEach(entry => {
+                    const spamSenderNumber = entry.spam_sender_number;
+
+                    // Skip entries with invalid or missing spam_sender_number
+                    if (!spamSenderNumber || typeof spamSenderNumber !== 'string') {
+                        return;
+                    }
+
+                    const telcoPrefix = spamSenderNumber.substring(0, 6);
+
+                    // Convert timestamp string to JavaScript Date object
+                    const dateString = entry.date_time_received.replace(/at/g, '').replace('UTC', '+0000');
+                    entry.date_time_received = new Date(dateString);
+
+                    // Initialize the count for the current telco and month
+                    const yearMonth = entry.date_time_received.toISOString().slice(0, 7);
+                    if (!spamCountPerMonth[telcoPrefix]) {
+                        spamCountPerMonth[telcoPrefix] = {};
+                    }
+                    if (!spamCountPerMonth[telcoPrefix][yearMonth]) {
+                        spamCountPerMonth[telcoPrefix][yearMonth] = 0;
+                    }
+
+                    // Increment the count
+                    spamCountPerMonth[telcoPrefix][yearMonth]++;
+
+                    // Update the max spam count for the current telco and month
+                    if (!maxSpamCountPerMonth[telcoPrefix]) {
+                        maxSpamCountPerMonth[telcoPrefix] = {};
+                    }
+                    if (
+                        !maxSpamCountPerMonth[telcoPrefix][yearMonth] ||
+                        spamCountPerMonth[telcoPrefix][yearMonth] > maxSpamCountPerMonth[telcoPrefix][yearMonth]
+                    ) {
+                        maxSpamCountPerMonth[telcoPrefix][yearMonth] = spamCountPerMonth[telcoPrefix][yearMonth];
+                    }
+
+                    // Add labels and values to categorizedData based on telco prefixes
+                    if (isGlobePrefix(telcoPrefix)) {
+                        categorizedData.Globe.labels.push(entry.date_time_received);
+                        categorizedData.Globe.values.push(maxSpamCountPerMonth[telcoPrefix][yearMonth]);
+                    } else if (isSmartPrefix(telcoPrefix)) {
+                        categorizedData.Smart.labels.push(entry.date_time_received);
+                        categorizedData.Smart.values.push(maxSpamCountPerMonth[telcoPrefix][yearMonth]);
+                    } else if (isDitoPrefix(telcoPrefix)) {
+                        categorizedData.DITO.labels.push(entry.date_time_received);
+                        categorizedData.DITO.values.push(maxSpamCountPerMonth[telcoPrefix][yearMonth]);
+                    } else {
+                        categorizedData.Unknown.labels.push(entry.date_time_received);
+                        categorizedData.Unknown.values.push(maxSpamCountPerMonth[telcoPrefix][yearMonth]);
+                    }
+                });
+
+                console.log('Max spam count per month:', maxSpamCountPerMonth);
+
+                return categorizedData;
+            }
+
+                    // Function to check if a prefix belongs to Globe
+                    function isGlobePrefix(prefix) {
+                        const globePrefixes = ['+639173', '+639175', '+639176', '+639178', '+639253', '+639255', '+639256', '+639257', '+639258', '+63905', '+63906', '+63915', '+63916', '+63917', '+63926', '+63927', '+63935', '+63936', '+63937', '+63945', '+63953', '+63954', '+63955', '+63956', '+63963', '+63965', '+63966', '+63967', '+63975', '+63976', '+63977', '+63978', '+63979', '+63995', '+63996', '+63997'];
+                        return globePrefixes.includes(prefix);
+                    }
+
+                    // Function to check if a prefix belongs to Smart
+                    function isSmartPrefix(prefix) {
+                        const smartPrefixes = ['+63907', '+63909', '+63910', '+63912', '+63930', '+63938', '+63946', '+63948', '+63950', '+63908', '+63918', '+63919', '+63920', '+63921', '+63928', '+63929', '+63939', '+63946', '+63947', '+63949', '+63951', '+63961', '+63998', '+63999', '+63922', '+63923', '+63924', '+63925', '+63931', '+63932', '+63933', '+63934', '+63940', '+63941', '+63942', '+63943', '+63973', '+63974'];
+                        return smartPrefixes.includes(prefix);
+                    }
+
+                    // Function to check if a prefix belongs to DITO
+                    function isDitoPrefix(prefix) {
+                        const ditoPrefixes = ['+63991', '+63992', '+63993', '+63994'];
+                        return ditoPrefixes.includes(prefix);
+                    }
+
+                     // Categorize data based on telco prefixes
+                    const telcoData = categorizeTelcoPrefixes(data);
+                    console.log('Telco data:', telcoData);
+                    console.log('Smart data:', telcoData['Smart']);
+                    console.log('Globe data:', telcoData['Globe']);
+                    console.log('DITO data:', telcoData['DITO']);
+                    console.log('Unknown data:', telcoData['Unknown']);
+
+                   // Check if any of the telcos has no data
+                    const telcosWithNoData = Object.keys(telcoData).filter(telco => telcoData[telco].labels.length === 0);
+                    telcosWithNoData.forEach(telco => {
+                        console.error(`No data found for ${telco}`);
+                    });
+
+                   // Create line chart for Smart
+                    createLineChart('smart-line-chart', telcoData['Smart'], 'Smart', 'rgba(10, 230, 10, 1)', 'rgba(10, 230, 10, 0.2)');
+
+                    // Create line chart for Globe
+                    createLineChart('globe-line-chart', telcoData['Globe'], 'Globe', 'rgba(10, 10, 255, 1)', 'rgba(10, 10, 255, 0.2)');
+
+                    // Create line chart for DITO
+                    createLineChart('dito-line-chart', telcoData['DITO'], 'DITO', 'rgba(255, 10, 10, 1)', 'rgba(255, 10, 10, 0.2)');
+
+                    // Create line chart for Unknown
+                    createLineChart('unknown-line-chart', telcoData['Unknown'], 'Unknown Telco', 'rgba(128, 128, 128, 1)', 'rgba(128, 128, 128, 0.2)');
+
+                    // Create bar chart for Smart
+                    createBarChart('smart-bar-chart', telcoData['Smart'], 'Smart', 'rgba(10, 230, 10, 0.7)');
+
+                    // Create bar chart for Globe
+                    createBarChart('globe-bar-chart', telcoData['Globe'], 'Globe', 'rgba(10, 10, 230, 0.7)');
+
+                    // Create bar chart for DITO
+                    createBarChart('dito-bar-chart', telcoData['DITO'], 'DITO', 'rgba(230, 10, 10, 0.7)');
+
+                    // Create bar chart for Unknown
+                    createBarChart('unknown-bar-chart', telcoData['Unknown'], 'Unknown Telco', 'rgba(128, 128, 128, 0.7)');
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function formatLabels(rawLabels) {
+        return rawLabels.map(label => new Date(label).toISOString().split('T')[0]);
+    }
+
+
+// Function to create a line chart
+function createLineChart(canvasId, telcoData, label, borderColor, backgroundColor) {
+    // Sort the dates
+    telcoData.labels.sort((a, b) => new Date(a) - new Date(b));
+
+    const formattedLabels = telcoData.labels.map(date => date.toISOString().slice(0, 7));
+
+    const chartData = {
+        labels: formattedLabels,
+        datasets: [
+            {
+                label: label,
+                data: telcoData.values,
+                borderColor: borderColor,
+                backgroundColor: backgroundColor, 
+                borderWidth: 1,
+                fill: true, 
+                hidden: false, 
+                pointRadius: 3
+            }
+        ]
+    };
+
+    const chartConfig = {
+        type: 'line',
+        data: chartData,
+        options: {
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'month',
+                        tooltipFormat: 'YYYY-MM'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Month'
+                    }
+                },
+                y: {
+                    type: 'linear',
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'Spam Messages'
+                    }
+                }
+            }
+        }
+    };
+
+    // Create the line chart
+    const lineChart = new Chart(document.getElementById(canvasId), chartConfig);
+    console.log(`Chart data for ${label}:`, chartData);
+}
+
+// Function to hide all Bar charts
+function hideAllBarCharts() {
+    hideBarChart('smart-bar-chart');
+    hideBarChart('smart-bar-chart-container');
+    hideBarChart('globe-bar-chart');
+    hideBarChart('globe-bar-chart-container');
+    hideBarChart('dito-bar-chart');
+    hideBarChart('dito-bar-chart-container');
+    hideBarChart('unknown-bar-chart');
+    hideBarChart('unknown-bar-chart-container');
+}
+
+// Function to hide a specific Bar chart
+function hideBarChart(chartId) {
+    const chart = document.getElementById(chartId);
+    if (chart) {
+        chart.style.display = 'none';
+    }
+}
+
+// Add the following functions to show and hide Bar charts
+function showAllBarCharts() {
+            showBarChart('smart-bar-chart-container');
+            showBarChart('smart-bar-chart');
+            showBarChart('globe-bar-chart');
+            showBarChart('globe-bar-chart-container');
+            showBarChart('dito-bar-chart');
+            showBarChart('dito-bar-chart-container');
+            showBarChart('unknown-bar-chart');
+            showBarChart('unknown-bar-chart-container');
+        }
+
+        function showBarChart(chartId) {
+            const chart = document.getElementById(chartId);
+            if (chart) {
+                chart.style.display = 'block';
+            }
+        }
+
+        // Add the following function to create a bar chart
+        function createBarChart(canvasId, telcoData, label, backgroundColor) {
+            const formattedLabels = telcoData.labels.map(date => date.toISOString().slice(0, 7));
+
+            const chartData = {
+                labels: formattedLabels,
+                datasets: [
+                    {
+                        label: label,
+                        data: telcoData.values,
+                        backgroundColor: backgroundColor,
+                        borderWidth: 1,
+                        fill: false,
+                        hidden: false,
+                        pointRadius: 3
+                    }
+                ]
+            };
+
+            const chartConfig = {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'month',
+                                tooltipFormat: 'YYYY-MM'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Month'
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Spam Messages'
+                            }
+                        }
+                    }
+                }
+            };
+
+            // Create the bar chart
+            const barChart = new Chart(document.getElementById(canvasId), chartConfig);
+            console.log(`Chart data for ${label}:`, chartData);
+        }
+
+        // Call the function to fetch and render the word cloud when the page loads
+        document.addEventListener('DOMContentLoaded', fetchAndRenderLineGraph);
+
+        document.addEventListener("DOMContentLoaded", function () {
+        var currentPage = window.location.href;
+
+        // Get all the anchor tags in the navigation
+        var navLinks = document.querySelectorAll('.navigation a');
+
+        // Loop through each anchor tag
+        navLinks.forEach(function (link) {
+        // Compare the href of the link with the current page URL
+        if (link.href === currentPage) {
+            // If it matches, add the 'active' class
+            link.parentElement.classList.add('active');
+        }
+        });
+    });
+</script>
+
+</body>
+
+</html>
