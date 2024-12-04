@@ -2,11 +2,11 @@
 
 The main objective of this study is to ----
 
-   > obj 1
+   > obj 1 sample
 
    > obj 2
 
-   > obj 3
+   > obj 3 
 
 ## Title for more information/description
 
