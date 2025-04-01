@@ -10,18 +10,13 @@ The main objective of this study is to develop an advanced SMS spam detection an
 
 D-SPAMPH: AN SMS SPAM DETECTION MOBILE APPLICATION WITH REPORTING PLATFORM AND DATA ANALYTICS USING LONG SHORT TERM MEMORY ALGORITHM
 
-Insert description/info here ------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------------------
+With the Philippines historically known as the "text capital of the world," the rise of SMS spam has become a growing concern for mobile users. Spam messages, often containing fraudulent links and deceptive content, pose risks to individuals and organizations alike. SMS-based scams have led to financial losses and personal data breaches.
 
-## Title for more information/description
+To address this issue, this researchers developed a mobile application, D-SpamPH, that employs a Long Short-Term Memory (LSTM) algorithm for spam detection. By leveraging a dataset sourced from Kaggle and real-world SMS reports, the system analyzes message content, classify spam, and provide a reporting mechanism for affected users. The mobile application is designed using Flutter and Dart, integrating an Android-based SMS inbox access feature to filter and flag suspicious messages.
 
-Insert description/info here ------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------------------
+Additionally, a web-based reporting platform was implemented using Firebase Firestore for centralized data storage. This platform is offering real-time analytics, including common spam keywords, peak spam activity periods, and top sources of fraudulent messages per telecommunications provider. The insights derived from this data will assist regulatory bodies, such as the National Telecommunications Commission (NTC), in crafting targeted interventions to combat SMS fraud.
 
-## Title for more information/description
-
-Insert description/info here ------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------------------
+This study's outcomes will benefit mobile phone users by providing them with a tool to detect and report spam efficiently. Additionally, it will offer valuable data to law enforcement agencies and telecommunications regulators, enabling them to track and mitigate the proliferation of SMS-based scams. By integrating advanced machine learning techniques and a user-driven reporting mechanism, this study contributes to a safer mobile communication environment.
 
 ## Group Members:
 
