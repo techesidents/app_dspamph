@@ -22,6 +22,10 @@ Additionally, a web-based reporting platform was implemented using Firebase Fire
 
 This study's outcomes will benefit mobile phone users by providing them with a tool to detect and report spam efficiently. Additionally, it will offer valuable data to law enforcement agencies and telecommunications regulators, enabling them to track and mitigate the proliferation of SMS-based scams. By integrating advanced machine learning techniques and a user-driven reporting mechanism, this study contributes to a safer mobile communication environment.
 
+## Link to the Final Build, Paper, & Manual:
+
+-----insert link of compiled files here
+
 ## Group Members:
 
 - Rose, Fritz Aeron
