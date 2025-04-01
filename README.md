@@ -24,15 +24,15 @@ This study's outcomes will benefit mobile phone users by providing them with a t
 
 # Project Source Tree Description  
 
-| Node             | Description |
-|-----------------|-------------|
-| **classes**     | Contains additional libraries, utilities, or class-based structures used in the project. |
-| **dist**        | Contains the APK file. Since GitHub restricts file uploads over 25MB, refer to `apk.txt` for the download link. |
-| **doc**         | Contains project documentation, including manuals and other references. |
-| **src**         | The main source code directory, which includes the implementation for both the mobile and web applications. |
-| **store_assets** | Stores images, app icons, and descriptions needed for publishing the mobile application. |
-| **DISCLAIMER.md** | Provides legal disclaimers, licensing information, and liability statements regarding the project. |
-| **README.md**   | This file provides an overview of the project structure, installation instructions, and other essential information. |
+| Node              | Description |
+|-------------------|-------------|
+| **classes**       | Contains additional libraries, utilities, or class-based structures used in the project. |
+| **dist**          | Contains the APK file. Since GitHub restricts file uploads over 25MB, refer to `apk.txt` for the download link. |
+| **doc**           | Contains project documentation, including manuals and manuscript. |
+| **src**           | The main source code directory, which includes the implementation for both the mobile and web applications. |
+| **store_assets**  | Stores images, app icons, and descriptions needed for publishing the mobile application. |
+| **DISCLAIMER.md** | Provides legal disclaimers and liability statements regarding the project. |
+| **README.md**     | This file provides an overview of the project structure, installation instructions, and other essential information. |
 
 For further details, refer to the respective README or documentation files in each directory. 🚀
 
