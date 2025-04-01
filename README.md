@@ -1,14 +1,14 @@
 # D-SpamPH
 
-The main objective of this study is to ----
+The main objective of this study is to develop an advanced SMS spam detection and reporting system to aid in the identification and mitigation of fraudulent messages.
 
-   > obj 1 sample
+   > Develop a Machine Learning Model using LSTM for SMS Spam Detection and Reporting System Mobile Application (D-SpamPH) and evaluate its accuracy using key performance metrics.
 
-   > obj 2
+   > Design and implement a web-based reporting dashboard utilizing data analytics to track SMS spam trends and incidents.
 
-   > obj 3 
+   > Deploy and assess the D-SpamPH Mobile Application based on ISO Standard Quality 9126 to ensure functionality, usability, and effectiveness.
 
-## Title for more information/description
+D-SPAMPH: AN SMS SPAM DETECTION MOBILE APPLICATION WITH REPORTING PLATFORM AND DATA ANALYTICS USING LONG SHORT TERM MEMORY ALGORITHM
 
 Insert description/info here ------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------
