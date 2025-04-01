@@ -40,6 +40,15 @@ For further details, refer to the respective README or documentation files in ea
 
 https://drive.google.com/drive/folders/1_7TXVhYcXEB-kiunHhVG1-TQRZV8r-wA?usp=drive_link
 
+## Folders
+
+    /app_dspamph
+    	/src - source code to build the dspamph web app (admin) and mobile app (users)
+		/DSpamPH_MobileApp (for sim users) - Frontend & Backend 
+		/DSpamPH_WebApp (for administrator) - Frontend & Backend 
+		/dist - apk file
+		/store_assets - app icon, description and store images
+
 ## Group Members:
 
 - Rose, Fritz Aeron
@@ -48,15 +57,6 @@ https://drive.google.com/drive/folders/1_7TXVhYcXEB-kiunHhVG1-TQRZV8r-wA?usp=dri
 - Ballenas, Marvin
 - Quiros, Cristel Lee
 
-
-Folders
-
-    /app_dspamph
-    	/src - source code to build the dspamph web app (admin) and mobile app (users)
-		/DSpamPH_MobileApp (for sim users) - Frontend & Backend 
-		/DSpamPH_WebApp (for administrator) - Frontend & Backend 
-		/dist - apk file
-		/store_assets - app icon, description and store images
  
 
   
