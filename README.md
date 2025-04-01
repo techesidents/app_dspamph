@@ -8,7 +8,7 @@ The main objective of this study is to develop an advanced SMS spam detection an
 
    > Deploy and assess the D-SpamPH Mobile Application based on ISO Standard Quality 9126 to ensure functionality, usability, and effectiveness.
 
-D-SPAMPH: AN SMS SPAM DETECTION MOBILE APPLICATION WITH REPORTING PLATFORM AND DATA ANALYTICS USING LONG SHORT TERM MEMORY ALGORITHM
+## D-SPAMPH: AN SMS SPAM DETECTION MOBILE APPLICATION WITH REPORTING PLATFORM AND DATA ANALYTICS USING LONG SHORT TERM MEMORY ALGORITHM
 
 With the Philippines historically known as the "text capital of the world," the rise of SMS spam has become a growing concern for mobile users. Spam messages, often containing fraudulent links and deceptive content, pose risks to individuals and organizations alike. SMS-based scams have led to financial losses and personal data breaches.
 
