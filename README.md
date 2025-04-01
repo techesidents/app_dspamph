@@ -34,7 +34,7 @@ This study's outcomes will benefit mobile phone users by providing them with a t
 | **DISCLAIMER.md** | Provides legal disclaimers and liability statements regarding the project. |
 | **README.md**     | This file provides an overview of the project structure, installation instructions, and other essential information. |
 
-For further details, refer to the respective README or documentation files in each directory. 🚀
+For further details, refer to the respective README or documentation files in each directory. 
 
 ## Link to the Final Build, Paper, & Manual:
 
