@@ -1,1 +1,6 @@
-add source codes in this folder
+This section contains the source codes for both the mobile and web applications.  
+
+- The **mobile app** source code is located in the `dspamph_mobileapp` directory.  
+- The **web app** source code is located in the `dpspamph_webapp` directory.  
+
+For setup instructions and dependencies, please refer to the respective README files in each directory.
