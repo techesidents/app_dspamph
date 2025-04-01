@@ -1,3 +1,7 @@
+## A THESIS PROJECT FOR THE COMPLETION OF CIT 219 BSIT-4B
+
+Hello! This is a Mobile App and Web Project developed by BSIT-4B Students of West Visayas State University - College of Information and Communications Technology. This project utilized Juypyter Notebook, Dart & Flutter, Firebase, Flask, and JavaScript.
+
 # D-SpamPH
 
 The main objective of this study is to develop an advanced SMS spam detection and reporting system to aid in the identification and mitigation of fraudulent messages.
