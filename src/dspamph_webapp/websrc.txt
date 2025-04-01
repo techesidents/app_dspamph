@@ -1,1 +1,4 @@
-add admin web based source code in this folder
+This section contains the source codes for the **admin web-based** application.  
+
+These codes are responsible for managing and overseeing the system's administrative functionalities.  
+Refer to the Manual for setup instructions, dependencies, and usage guidelines.  
