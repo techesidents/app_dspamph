@@ -26,7 +26,6 @@ This study's outcomes will benefit mobile phone users by providing them with a t
 
 | Node              | Description |
 |-------------------|-------------|
-| **classes**       | Contains additional libraries, utilities, or class-based structures used in the project. |
 | **dist**          | Contains the APK file. Since GitHub restricts file uploads over 25MB, refer to `apk.txt` for the download link. |
 | **doc**           | Contains project documentation, including manuals and manuscript. |
 | **src**           | The main source code directory, which includes the implementation for both the mobile and web applications. |
